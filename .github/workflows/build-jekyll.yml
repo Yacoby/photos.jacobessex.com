@@ -1,0 +1,44 @@
+name: Build and Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - master  # Here source code branch is `master`, it could be other branch
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+      - run: yarn install
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+
+      - name: Build site
+      # use jekyll-action-ts to build
+      # https://github.com/limjh16/jekyll-action-ts
+        uses: limjh16/jekyll-action-ts@v2
+        with:
+          enable_cache: true
+          # custom_opts: '--verbose --trace'  #'--drafts --future'
+          ### If you need to specify any Jekyll build options, enable the above input
+          ### Flags accepted can be found here https://jekyllrb.com/docs/configuration/options/#build-command-options
+      # use actions-gh-pages to deploy
+      # https://github.com/peaceiris/actions-gh-pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          force_orphan: true # Attempt to reduce branch size
+

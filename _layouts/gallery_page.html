@@ -1,0 +1,19 @@
+---
+layout: default
+---
+
+<div class="pt-2 px-2">
+  <a href="{{page.year | gallery_index_url }}">{{page.year}}</a> | {{page.gallery.name}}
+</div>
+<div class="p-2">
+  <div class="grid grid-flow-row gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    {% for image in page.gallery.images %}
+      <a data-lightbox="gallery" href="{{image.path}}">
+        <img data-lightbox="gallery" class="object-cover object-center w-full h-full rounded-lg" src="{{image.thumbnail_path}}">
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+<script type="text/javascript" src="/assets/js/lightbox-plus-jquery.js"></script>
+
