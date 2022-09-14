@@ -2,18 +2,12 @@
 layout: default
 ---
 
-{% if page.year %}
-  {% assign page_year = page.year %}
-{% else %}
-  {% assign page_year = site.data.max_gallery_year %}
-{% endif %}
-
 {% assign gallery_years_size = site.data.gallery_years | size %}
 {% if gallery_years_size > 1 %}
   <div class="pt-2 px-2">
     <div class="divide-x">
         {% for year in site.data.gallery_years %}
-          {% if year == page_year %}
+          {% if year == page.year %}
             <a href="{{year | gallery_index_url}}" class="underline pt-2 px-2">{{year}}</a>
           {% else %}
             <a href="{{year | gallery_index_url}}" class="pt-2 px-2">{{year}}</a>
@@ -25,14 +19,12 @@ layout: default
 
 <div class="p-2">
   <div class="grid grid-flow-row gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-    {% for gallery in site.data.galleries %}
-      {% if gallery.datetime.year == page_year %}
-        <div class="opacity-60 hover:opacity-100">
-          <a href="{{gallery | gallery_url}}">
-            <img alt="{{gallery.name}}" class="object-cover object-center h-full w-full rounded-lg" src="{{gallery.highlight_image.thumbnail_path}}">
-          </a>
-        </div>
-      {% endif %}
+    {% for gallery in page.galleries %}
+      <div class="opacity-60 hover:opacity-100">
+        <a href="{{gallery | gallery_url}}">
+          <img alt="{{gallery.name}}" class="object-cover object-center h-full w-full rounded-lg" src="{{gallery.highlight_image.thumbnail_path}}">
+        </a>
+      </div>
     {% endfor %}
   </div>
 </div>
